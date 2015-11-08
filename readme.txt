@@ -8,6 +8,6 @@ git commit -m "something to show change "
 git status 
 git diff
 
-
+git log 
 
 
