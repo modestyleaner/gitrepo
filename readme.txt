@@ -42,3 +42,4 @@ git branch -d testbranch // delete branch
 git merge testbrach
 
 =================================================================
+git how to done with branch 
