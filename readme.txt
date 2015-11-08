@@ -43,6 +43,13 @@ git merge testbrach
 
 =================================================================
 
+git stash
+
+git stash apply 
+git stash drop
+git stash pop == git stash apply + git stash drop
+
+
  
 
 
