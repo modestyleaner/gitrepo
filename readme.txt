@@ -44,10 +44,12 @@ git merge testbrach
 =================================================================
 
 git stash
-
+git stash list 
 git stash apply 
 git stash drop
-git stash pop == git stash apply + git stash drop
+git stash pop == git stash apply + git stash drop 
+================================================================
+git branch manager : master dev feature bug 
 
 
  
