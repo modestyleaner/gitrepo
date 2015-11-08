@@ -27,10 +27,18 @@ git push origin master
 
 ==================================================================
 
-git branch newbranch
+git branch newbranch //new 
 
-git branch 
+git branch  //list branch 
 
-git checkout newbranch
+git checkout testbranch // chekcout to branch 
+
+git branch -b testbranch  // new and checkout 
+
+git branch -d testbranch // delete branch 
+
+
+
+git merge testbrach
 
 =================================================================
