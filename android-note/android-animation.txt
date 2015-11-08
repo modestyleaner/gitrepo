@@ -1,0 +1,29 @@
+android animation: http://blog.csdn.net/singwhatiwanna/article/details/17841165
+
+------------------------------------------------------------
+
+tween animation: alpha ,translate, rotate,scale 
+
+  ---- class : Animation | AnimationUtils
+  ---- xml:  res/anim 
+
+------------------------------------------------------------
+   
+frame animation :
+  --- class :  AnimationDrawable 
+   
+    how to use : AnimationDrawable ad = (AnimationDrawable)mContext.getResource().getDrawable(R.drawabel.frame_animat);
+	
+------------------------------------------------------------
+
+property animation :
+   
+   android3.0 api level : 11  --->  nineoldandroids lib 
+   
+   TimeInterpolator  |  TypeEvaluator
+
+   ValueAnimator | ObjectAnimator | AnimatorSet 
+
+   
+   
+   
