@@ -16,4 +16,13 @@ git reset --hard HEAD^
 
 git checkout  --readme.txt  
 
+=================================================================
+how to combind remote git repo  whith local git repo
+
+git remote add origin git@github.com:michaelliao/learngit.git
+
+git push -u origin master
+
+git push origin master 
+
 
