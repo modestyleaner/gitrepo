@@ -25,4 +25,12 @@ git push -u origin master
 
 git push origin master 
 
+==================================================================
 
+git branch newbranch
+
+git branch 
+
+git checkout newbranch
+
+=================================================================
