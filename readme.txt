@@ -33,7 +33,7 @@ git branch  //list branch
 
 git checkout testbranch // chekcout to branch 
 
-git branch -b testbranch  // new and checkout 
+git checkout -b testbranch  // new and checkout 
 
 git branch -d testbranch // delete branch 
 
@@ -42,4 +42,9 @@ git branch -d testbranch // delete branch
 git merge testbrach
 
 =================================================================
+
 git how to done with branch 
+
+
+
+
