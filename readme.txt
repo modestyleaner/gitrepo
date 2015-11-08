@@ -7,7 +7,13 @@ git commit -m "something to show change "
 
 git status 
 git diff
+git diff HEAD --readme.txt
+
 
 git log 
+
+git reset --hard HEAD^
+
+git checkout  --readme.txt  
 
 
