@@ -51,6 +51,9 @@ git stash pop == git stash apply + git stash drop
 ================================================================
 git branch manager : master dev feature bug 
 
+==============================================================
+
+android优秀学习资料汇总： https://github.com/bboyfeiyu/android-tech-frontier/tree/master/the-bad-guys
 
  
 
