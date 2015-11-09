@@ -1,7 +1,7 @@
 android animation: http://blog.csdn.net/singwhatiwanna/article/details/17841165
 
 ------------------------------------------------------------
-
+View 动画 
 tween animation: alpha ,translate, rotate,scale 
 
   ---- class : Animation | AnimationUtils
