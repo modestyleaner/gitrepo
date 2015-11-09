@@ -5,15 +5,42 @@ View 动画
 tween animation: alpha ,translate, rotate,scale 
 
   ---- class : Animation | AnimationUtils
+               AlphaAnimation | RotateAnimation | TranslateAnimation | ScaleAnimation                
   ---- xml:  res/anim 
 
+			xml property : android:interpolator= @android:anim/accelerate_decelerate_interpolator(default)
+										 android:shareInterpolator=[true|false]
+										 
+										 android:duration
+										 android:fillAfter="true|false"  //true ： 动画结束后，停留在当前位置   false： 反之 
+										 
+			how to use ;
+			  Animation anim = AnimationUtils.loadAnimation(context,R.anim.animation_test);
+			  btn.startAnimation(anim);
+			  
+			Interface:  AnimationListener --> onAnimationStart | onAnimationEnd | onAnimationRepeat 
+			
+			自定义动画： 
+				1  继承 Animation 
+				2 实现  initialize() 和 applyTransformation() 方法
+				
+			
 ------------------------------------------------------------
    
 frame animation :
   --- class :  AnimationDrawable 
    
     how to use : AnimationDrawable ad = (AnimationDrawable)mContext.getResource().getDrawable(R.drawabel.frame_animat);
-	
+	  						
+	  						btn.setBackgroundResource(R.drawable.frame_animation);
+	  						AnimationDrawable drawable = btn.getBackground();
+	  						drawable.start();
+	  						
+	  						
+	  xml： /res/drawable/animation-drawable-test.xml
+	  <animation-list ></animation-list>
+	  
+		注意: 帧动画 如果图片过大 ，容易引起OOM 	  
 ------------------------------------------------------------
 
 property animation :
@@ -23,7 +50,65 @@ property animation :
    TimeInterpolator  |  TypeEvaluator
 
    ValueAnimator | ObjectAnimator | AnimatorSet 
+   
+   xml 中使用属性动画：
+    /res/animator/xxxx.xml
+    
+    <set >
+    		<objectAnimator> </objectAnimator>
+    		<Animator></Animator>
+    		<set></set>
+    </set>
 
    
+   动画监听器：AnimatorUpdateListener | AnimatorListener 
+   AnimatorUpdateListener : onAnimationUpdate(ValueAnimator animator);
    
+  注意：1   要做动画的view必须保证有其属性对应的get 和 set方法，否则可能出现crash。 
+    2   对于没有 set和get方法的解决方案：
+    	2.1   给你的对象加上get和set方法
+    	2.2  用一个类包装原始对象，简介为其提供get和set方法
+    	2.3 采用valueAnimator，监听动画过程，自己实现属性的改变
+    	
+    	 
+    
+ -------------------------------------------------------------------------
+ View动画的特殊使用场景：
+ 
+  1 在ViewGroup中控制子元素的出场效果
+  	 LayoutAnimation  :  
+  	 								   属性：  android:delay | android:animationOrder :normal,reverse ,random 
+     
+     LayoutAnimationController controller = new LayoutAnimationControlelr(animation);
+     listview.setLayoutAnimation(controller)  	 		
+     
+     						 
+  2 在Activity中实现不同Activity的入场效果
+  	
+  	  在startActivity | finish 后调用overridePendingTransition(enterAnim,exitAnim);
+  	  
+  	 Fragment 添加切换动画：  FragmentTransaction 中的setCustomAnimations();  
+  	 
+ --------------------------------------------------------------------------------
+   使用动画注意事项：
+   1 硬件加速： 
+       	可以在不同的级别上进行硬件加速：
+       	1.1 应用层 ： <application android:hardwareAccelerated="true" />
+       	1.2 activity 层 : <activity android:hardwareAccelerated="true" />
+       	1.3 Window 层： getWindow。setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,WindowManager.LayoutParams.FLAG_
+       	              HARDWARE_ACCELERATED);
+       	1.4 View层 ： View.setLayerType(View.LAYER_TYPE_SOFTWARE,null);
+       	
+       	
+       	在这四个层次中，应用和Activity是可以选择的，Window只能打开，View只能关闭。
+    		在apk的AndroidManifest中，如果指定了minSDKVersion&targetSDKVersion=7，会使得应用无法使用硬件加速进行绘图。
+    		
+  2 兼容性问题： api 11 andorid3.0 之前不可以使用属性动画，可以使用第三方库： nineoldandorids。jar
+  3 OOM问题： frame animation 大图片容易出现OOM
+  4 内存泄露： 对于属性动画中的无线循环动画，需要在activity退出时，及时停止，否则activity无法释放造成内存泄露
+  5 View动画的问题： 并未真正改变View的状态，因此有时会出现动画完成后无法隐藏的现象。 需要先调用 view.clearAnimation(),清楚动画。
+  
+  
+  	 
+    
    
