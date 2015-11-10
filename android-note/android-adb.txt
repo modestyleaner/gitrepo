@@ -1,0 +1,41 @@
+android adb 使用技巧：
+
+1 添加环境变量： 将platform-tools路径添加到path路径中去
+ 
+2 adb version  adb 版本查询
+
+3 adb shell  进入shell命令行
+
+4 android list targets  显示系统中全部android平台
+
+5 adb install -r pathapk   (adb install -r F:\Test.apk)
+
+6 adb uninstall -k pathapk (-k keep the data and cache dir)
+
+7 adb push <local> <remote> 
+	该命令可以将本地文件推动到手机上
+8 adb pull <remote> <local>
+	该命令可以将手机上文件推动到本地
+
+9 Logcat命令行：
+  9.1 查看log： logcat |grep 'keywords'
+
+ 10  删除应用：
+  			   adb remount
+  			   adb shell
+  			   adb system/app
+  			   adb *.apk
+11  adb shell df  查看系统盘符
+
+12 adb shell pm list packages -f  所有已经安装的应用包
+
+13 模拟按键输入： input keyevent 3    //home键
+				 input keyevent 4   //back
+				 input keyevent 82  //menu 
+				 input keyevent 19  //up
+				 input keyevent 20  //down 
+				 input keyevent 21  //left
+				 input keyevent 22  //right
+				 input keyevent 66  //enter
+
+14  
