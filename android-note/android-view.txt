@@ -1,0 +1,144 @@
+android  view 控件绘制及自定义
+
+View 测量：使用MeasureSpec 类   
+   MeasureSpec 是一个32位int值，高2位为测量模式，低30位为测量的大小
+   测量模式：
+   EXACTLY： 指定的widht|height ，或者matchparent
+   AT_MOST:  指定为wrap_content 
+   UPSPECIFIED: 不指定其大小及测量模式。
+   
+   
+VelocityTracker类：
+ViewConfiguration类：
+
+   
+   
+ 自定义view的几种方式：
+ 
+    1 自绘控件，继承 View,实现onDraw();
+    2 组合控件，一般继承系统的布局layout，
+    3 继承控件，一般继承
+-------------------------------------------------------------------
+ 一个activity的布局嵌套： 
+  PhoneWindow$DecorView -> LinearLayout ->  FrameLayout -> TextView (id/title)
+											FrameLayout (id/content) -> RelativeLayout(contentLayout) -> ...
+											
+View 的touch事件分发机制：											
+1.Activity的最顶层Window是PhoneWindow，PhoneWindow的最顶层View是DecorView
+
+2.一个clickable或者longClickable的View会永远消费Touch事件，不管他是enabled还是disabled的
+
+3.View的长按事件是在ACTION_DOWN中执行，要想执行长按事件该View必须是longClickable的，并且不能产生ACTION_MOVE
+
+4.View的点击事件是在ACTION_UP中执行，想要执行点击事件的前提是消费了ACTION_DOWN和ACTION_MOVE,并且没有设置
+  OnLongClickListener的情况下，如设置了OnLongClickListener的情况，则必须使onLongClick()返回false
+  
+5.如果View设置了onTouchListener了，并且onTouch()方法返回true，则不执行View的onTouchEvent()方法，也表示View
+    消费了Touch事件，返回false则继续执行onTouchEvent()
+    
+6.Touch事件是从最顶层的View一直分发到手指touch的最里层的View,如果最里层View消费了ACTION_DOWN事件
+  （设置onTouchListener，并且onTouch()返回true 或者onTouchEvent()方法返回true）才会触发ACTION_MOVE,ACTION_UP
+    的发生,如果某个ViewGroup拦截了Touch事件，则Touch事件交给ViewGroup处理
+    
+7.Touch事件的分发过程中，如果消费了ACTION_DOWN,而在分发ACTION_MOVE的时候,某个ViewGroup拦截了Touch事件，
+     就像上面那个自定义CustomLayout，则会将ACTION_CANCEL分发给该ViewGroup下面的Touch到的View,然后将Touch事件交给
+     ViewGroup处理，并返回true
+---------------------------------------------------------------
+LayoutInflater 原理分析：
+   1 获取LayoutInflater方法：
+   		type1:  (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+   		type2:  LayoutInflater.from(context) ;  //该种方法是第一种方式的封装，简写
+   		
+   2 使用：
+   		layoutInflater.inflate(R.layout.layout,root); //root代表父容器，如果不需要，则设置null
+   
+   3 注意： 使用该种方式将一个view加入parentview中，则改view的layout_width和layout_height 将失效
+     
+   4 LayoutInflater 原理：
+   		使用android的解析xml的pullparse技术，进行xml的遍历解析，然后通过 反射技术，进行相应对象的生成。
+   		
+--------------------------------------------------------------------------
+View 绘制机制：
+	3步： onMeasure，onLayout，onDraw
+
+View 视图状态及重绘流程：
+   常见的视图状态：
+    1 enable
+    2 pressed
+    3 focused  通过requestFocus方法进行获取焦点，通过返回值判断是否获取焦点
+    4 window_focused
+    5 selected	  
+   
+  视图重绘：
+    当设置View ： Visibility，Enabled，Selected 等视图状态时，可以手动使用invalidate();
+    注意： invalidate()方法不会进行onMeasure和onLayout ，因为没有重绘标志位改变以及尺寸改变。
+    可以使用requestLayout方法进行onMeasure和onLayout的强制重绘
+    
+    
+----------------------------------------------------------------------
+View 坐标系：
+  1 Android坐标系： 绝对坐标 ，相对于屏幕
+  2 视图坐标系：相对坐标
+
+  Api：
+    View： getTop,getRight,getBottom,getLeft .视图坐标系，相对于父布局
+    MotionEvent： getX，getY  视图坐标系，相对控件自身左边，上边距离
+    			  getRawX，getRawY ,绝对坐标，相对屏幕边缘距离
+    			  
+
+View 实现滑动的7种方式：
+  1 layout方法 ： 在motionevent中获取偏移距离后，使用layout(l,t,r,b)方法进行重新位置设置
+  2 使用系统封装的一个对左右，上下移动的api的封装 。计算出偏移量后，调用该方法，即可以实现移动
+   offsetLeftAndRight(offsetX);
+   offsetTopAndBottom(offsetY); 
+  3 LayoutParams ： 保存了view的布局参数
+     通过计算偏移量，然后获取该view的LayoutParams(必须要有父布局，才有LayoutParams)，然后转化成相应的父布局，进行设置：
+     LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)getLayoutParams();
+     lp.leftMargin = getLeft()+offsetX;
+     lp.topMargin = getTop+offsetY ;
+     setLayoutParams(lp);
+
+    //或者使用：通过改变margin来进行view的设置
+    ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams)getLayoutParams();
+    lp.leftMargin = getLeft()+offsetX;
+    lp.topMargin = getTop+offsetY ;
+    setLayoutParams(lp);
+
+  4 scrollTo 或 scrollBy : 移动View的content，移动瞬间完成
+  
+     使用该方式，如果要对当前的view做移动，那需要获取父布局进行移动。
+     同时,offsetx,offsety,需要取反。即((View)getParent()).scrollBy(-offsetX,-offsetY);
+     
+   
+     
+  5  Scroller 方式 ：具有过渡，缓冲的滑动处理类，平滑移动效果
+  	 
+  	  1 初始化Scroller： Scroller scroller = new Scroller(context);
+  	  2 重写computeScroll()方法，实现模拟滑动
+  	  
+  	  /**
+	 * draw()方法中调用该方法
+	 */
+		@Override
+		public void computeScroll() {
+			super.computeScroll();
+			//判断Scroller是否执行完毕
+			if(scroller.computeScrollOffset()){
+				((View)getParent()).scrollTo(scroller.getCurrX(),scroller.getCurrY());
+				//通过重绘不断进行调用computeScroll
+				invalidate();
+			}
+		}
+  
+       3 在需要开始滑动的地方调用Scroller的
+        startScroll(int startX,int startY,int dx,int dy,int duration);
+        startScroll(int startX,int startY,int dx,int dy);
+        
+      
+  6  
+----------------------------------------------------------------------
+参考资源： 
+     1 view相关解析 ：http://blog.csdn.net/guolin_blog/article/details/12921889
+     2 ViewGroup 事件分发机制： http://blog.csdn.net/xiaanming/article/details/21696315
+     3 Scroller : http://www.cnblogs.com/wanqieddy/archive/2012/05/05/2484534.html
+     

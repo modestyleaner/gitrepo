@@ -1,0 +1,4 @@
+dpi 、 dip 、分辨率、屏幕尺寸、px、density 关系以及换算
+
+blog:
+    http://www.cnblogs.com/yaozhongxiao/p/3842908.html
