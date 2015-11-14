@@ -1,0 +1,62 @@
+android 消息机制：
+  handler + messageQueue + Looper  + ThreadLocal  
+  
+  Handler 使用方式：
+  	1 ActivityThread中使用：
+  	  直接实例化Hanlder：
+  	  
+	//type1： 通过handler的子类进行msg的处理
+	Handler handler = new Handler(){
+		public void handleMessage(Message msg) {
+			
+		};
+	};
+
+	//type2：通过一个回调接口来实现
+	Handler handler1 = new Handler(new HandlerCallBack());
+	class HandlerCallBack implements Callback{
+		@Override
+		public boolean handleMessage(Message arg0) {
+			return false;
+		}
+	}
+	
+	在子线程中通过 handler1.sendMessage(msg);进行触发
+		
+     2 在子线程中使用Handler
+     
+		Looper.prepare();
+		Handler handler = new Handler(){
+			public void handlerMessage(Message msg){
+			
+			};
+		};
+		Looper.loop();
+		
+		
+    3 使用post方式
+      Handler handler= new Handler();
+      handler.post(updateThread);
+      
+      Runnable updateThread = new Runnable(){
+       		@Override 
+	        public void run() {  
+	            System.out.println("UpdateThread");  
+	            //在run方法内部，执行postDelayed或者是post方法  
+	            handler.postDelayed(updateThread, 3000);  
+	        }  
+      }; 
+      
+      //移除该callback
+      handler.removeCallbacks(updateThead);
+      
+      
+      4
+      	//并未创建新线程，而是在当前线程执行
+      Handler handler = new Handler();
+      handler.post(new Runnable(){
+      	public void run(){
+      		//......
+      	}
+      });
+      

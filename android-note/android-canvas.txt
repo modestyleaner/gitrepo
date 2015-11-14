@@ -1,0 +1,34 @@
+Canvas 绘图
+
+  Paint 相关设置：
+    setAntiAlias();
+    setColor();
+    setARGB();
+    setAlpha();
+    setTextSize();
+    setStyle();
+    setStrokeWidth();
+    
+    
+  Canvas 相关方法：
+    draw... 
+    save();
+    rotate();
+    translate();
+    restore();
+    
+    restoreToCount();
+    saveLayerAlpha(); 图层支持
+    
+Android xml 绘图：
+
+ 1 Shape
+ 
+	<shape xmlns:android="http://schemas.android.com/apk/res/android" 
+	    android:shape="rectangle|oval|ring|line">
+	    
+		<corners|gradient|padding|size|solid|stroke />
+	</shape>
+
+  ------------------------------------------------------------------------  
+Paint属性 介绍： http://wpf814533631.iteye.com/blog/1847661

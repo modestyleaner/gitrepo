@@ -1,0 +1,83 @@
+
+ android drawable 使用技巧：
+   1 drawable state 自定义：
+     	除了系统自带的state，可以使用自定义的方式，添加state，可以进行代码优化
+     步骤： 1.1 ： 自定义state属性文件   /res/values/drawable_status.xml
+       <?xml version="1.0" encoding="utf-8"?>  
+		<resources>  
+		    <declare-styleable name="MessageStatus">  
+		        <attr name="state_message_readed" format="boolean" />  
+		    </declare-styleable>  
+		</resources>
+		
+		1.2 对要增加状态的容器，自定义容器，然后添加onCreateDrawableState方法： 
+		public class MessageListItem extends RelativeLayout  
+		{  
+		    private static final int[] STATE_MESSAGE_READED = { R.attr.state_message_readed };  
+		    private boolean mMessgeReaded = false;  
+		  
+		    public MessageListItem(Context context, AttributeSet attrs)  
+		    {  
+		        super(context, attrs);  
+		    }  
+		  
+		    public void setMessageReaded(boolean readed)  
+		    {  
+		        if (this.mMessgeReaded != readed)  
+		        {  
+		            mMessgeReaded = readed;  
+		            refreshDrawableState();  
+		        }  
+		    }  
+		  
+		    @Override  
+		    protected int[] onCreateDrawableState(int extraSpace)  
+		    {  
+		        if (mMessgeReaded)  
+		        {  
+		            final int[] drawableState = super  
+		                    .onCreateDrawableState(extraSpace + 1);  
+		            mergeDrawableStates(drawableState, STATE_MESSAGE_READED);  
+		            return drawableState;  
+		        }  
+		        return super.onCreateDrawableState(extraSpace);  
+		    }  
+		  
+		}  
+		
+		1.3 此时，改状态就可以使用了，像系统状态一样，通过定义selector，使用该state状态
+		
+		参考地址：http://blog.csdn.net/lmj623565791/article/details/43752383
+				 https://github.com/CharlesHarley/Example-Android-CustomDrawableStates
+		
+
+---------------------------------------------------------------------------------------------	
+
+    2 自定义Drawable 
+      	继承Drawable类，然后实现以下方法： 
+      	setAlpha
+      	setColorFilter
+      	getOpacity
+      	draw
+      	getIntrinsicWidth
+      	getIntrinsicHeight
+-----------------------------------------------------------------------------------------------    	
+      	
+    3 通过Drawable，首页白屏问题处理：
+       	通过设置  activity配置文件theme属性，设置windowBackground属性，然后设置图片，可以达到这个效果
+
+-------------------------------------------------------------------------------------------------
+    4 自定义圆角图片的3中方式：
+      4.1 BitmapShader 方式，自定义view继承ImageView
+        	地址： http://blog.csdn.net/lmj623565791/article/details/41967509
+      
+      4.2 Xfermode方式，自定义view继承View
+      		地址： http://blog.csdn.net/lmj623565791/article/details/24555655
+      		
+      4.3 自定义drawable，利用bitmapShader方式
+      
+      
+
+
+==========================================================================
+android drawable 使用技巧： http://blog.csdn.net/lmj623565791/article/details/43752383
