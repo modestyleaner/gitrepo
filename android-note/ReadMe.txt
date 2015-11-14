@@ -22,3 +22,23 @@ An Android library which allows developers to easily add animations to ListView 
 
 https://github.com/android-cn/android-open-project-demo/tree/master/volley-demo
 Volley demo
+
+
+material Design 中文网址： http://wiki.jikexueyuan.com/project/material-design/
+
+在线android源码搜索的网站： codota
+在线android第三方库搜索的网站： android-arsenal
+在线反编译： andorid apk compiler
+知乎 android开发工具 ：http://www.zhihu.com/question/27140400
+andorid 基础知识点的介绍： http://guides.codepath.com/android 
+
+android Tab类型首页实现方式总结：
+  http://blog.csdn.net/lmj623565791/article/details/24740977 
+  
+
+android优秀学习资料汇总： https://github.com/bboyfeiyu/android-tech-frontier/tree/master/the-bad-guys
+
+android 在线源码地址： http://androidxref.com/
+
+                    http://grepcode.com/project/repository.grepcode.com/java/ext/com.google.android/android/
+                      
