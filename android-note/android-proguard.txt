@@ -60,3 +60,4 @@ android编译打包步骤：
 ----------------------------------------------------------------------------
 proguard :http://blog.csdn.net/dai_zhenliang/article/details/42423575
 android ant 编译详解： http://blog.csdn.net/zuolongsnail/article/details/6444361 
+http://blog.csdn.net/likebamboo/article/details/17888563

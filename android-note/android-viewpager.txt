@@ -1,0 +1,107 @@
+android viewpager 使用总结：
+
+ 1 基本使用
+   1.1 xml生命viewpager控件
+   1.2 加载要显示的页卡
+   1.3 Activity中实例化ViewPager，同时设置PagerAdapter.重点在重写ViewPager中的方法：
+   
+     	public MyViewPagerAdapter(List<View> mListViews) {  
+            this.mListViews = mListViews;//构造方法，参数是我们的页卡，这样比较方便。  
+        }  
+  
+        @Override  
+        public void destroyItem(ViewGroup container, int position, Object object)   {     
+            container.removeView(mListViews.get(position));//删除页卡  
+        }  
+  
+  
+        @Override  
+        public Object instantiateItem(ViewGroup container, int position) {  //这个方法用来实例化页卡         
+             container.addView(mListViews.get(position), 0);//添加页卡  
+             return mListViews.get(position);  
+        }  
+  
+        @Override  
+        public int getCount() {           
+            return  mListViews.size();//返回页卡的数量  
+        }  
+          
+        @Override  
+        public boolean isViewFromObject(View arg0, Object arg1) {             
+            return arg0==arg1;//官方提示这样写  
+        }  
+        
+   2 实现 页卡循环
+      
+      public class MyPagerAdapter extends PagerAdapter {
+
+			private List<View> views ;
+			private MyViewPagerTest mContext ;
+			private HashMap<View, Boolean> loadTag;
+			
+			public  MyPagerAdapter(MyViewPagerTest context,List<View> views){
+				this.views = views ;
+				this.mContext = context ;
+				loadTag = new HashMap<View, Boolean>();
+			}
+			
+			@Override
+			public Object instantiateItem(ViewGroup container, int position) {
+				 Log.e("MyPagerAdapter", "instantiateItem is called   " + position);
+				 View view = views.get(position%views.size()) ;
+				 try{
+					 (container).addView(view,0);
+				 }catch(Exception e){
+					 e.printStackTrace();
+				 }
+				 Log.e("MyPagerAdapter","instantiateItem>>>>>>" + position % views.size());  
+				return views.get(position%views.size());
+			}
+			
+			
+			@Override
+			public void destroyItem(ViewGroup container, int position, Object object) {
+				  Log.e("MyPagerAdapter", "destroyItem is called   " + position);
+				  //如果view少于3个，则不进行删除操作
+				  if(views.size()>3){
+					  (container).removeView(views.get(position %  views.size()));
+				  }
+			}
+			
+			/**
+			 * view 预加载处理
+			 */
+			@Override
+			public void setPrimaryItem(ViewGroup container, int position, Object object) {
+				super.setPrimaryItem(container, position, object);
+				int index = position % views.size();
+				if(!loadTag.get(views.get(index))){
+					Log.e("MyPagerAdapter","setPrimaryItem>>>>>>" + position % views.size());
+					mContext.createView(index);
+					loadTag.put(views.get(index), true);
+				}
+			}
+			
+			public void setLoadTag(boolean tag){
+				if(views !=null && views.size()>0){
+					for (View view : views) {
+						loadTag.put(view,tag);
+					}
+				}
+			}
+			
+			@Override
+			public int getCount() {
+				return Integer.MAX_VALUE;
+			}
+			
+			@Override
+			public boolean isViewFromObject(View arg0, Object arg1) {
+				return arg0 == arg1;
+			}
+		}
+		
+    3 动态加载图片的viewpager 
+       url: http://www.tuicool.com/articles/EBza2y
+       
+     

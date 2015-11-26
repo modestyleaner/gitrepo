@@ -1,0 +1,59 @@
+一般app都会有用户体系，则头像设置必不可少，对于头像的裁剪，是一个开发的要点。
+
+  1 选取头像： 发送特定intent，调用系统相册或者摄像头
+  		对于调用系统相册，选取图片，在onActivityResult函数，一般有2中方式获取数据：
+  		<1> 获取bitmap数据： 图片过大，超过300k，容易导致内存溢出，程序崩溃。推荐使用第二种方式
+  		<2> 获取Uri数据
+			方式1 ：new Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+			方式2： Intent intent1 = new Intent(Intent.ACTION_GET_CONTENT,MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+				   intent1.setType("image/*");
+  		对于拍照，设置intent时，使用Uri作为返回值
+  		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		imgUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory().getAbsolutePath(),String.valueOf(System.currentTimeMillis())+".png"));
+		intent.putExtra(MediaStore.EXTRA_OUTPUT, imgUri);
+  		
+  2 对于图片的裁剪，2中方式： 开源lib： cropper(https://github.com/edmodo/cropper)  或者 调用系统
+  
+		/**
+	 * 裁剪图片
+	 *    
+	 附加选项    数据类型    描述  
+    crop    String  发送裁剪信号  
+    aspectX int X方向上的比例  
+    aspectY int Y方向上的比例  
+    outputX int 裁剪区的宽  
+    outputY int 裁剪区的高  
+    scale   boolean 是否保留比例  
+    return-data boolean 是否将数据保留在Bitmap中返回  
+    data    Parcelable  相应的Bitmap数据  
+    circleCrop  String  圆形裁剪区域？  
+    MediaStore.EXTRA_OUTPUT ("output")  URI 将URI指向相应的file:///...，详见代码示例  
+	 */	
+	private void cropPhoto() {
+		Intent intent = new Intent("com.android.camera.action.CROP");
+		intent.setType("image/*");
+		List<ResolveInfo> list = getPackageManager().queryIntentActivities(intent,0);
+		if(list!=null && list.size()>0){
+			intent.setData(imgUri);
+			intent.putExtra("outputX", 300);
+			intent.putExtra("outputY", 300);
+			intent.putExtra("scale", true);
+			intent.putExtra("return-data",true);
+			intent.putExtra("aspectX", 1);
+			intent.putExtra("aspectY", 1);
+			
+			ResolveInfo info = list.get(0);
+			intent.setComponent(new ComponentName(info.activityInfo.packageName,info.activityInfo.name));
+			startActivityForResult(intent,PIC_CROP);
+		}else{
+			Toast.makeText(this, "can't find crop app", Toast.LENGTH_SHORT).show();  
+			return;  
+		}
+		
+	}
+
+
+
+------------------------------------------------------------
+http://blog.csdn.net/zhaokaiqiang1992/article/details/43022023
+http://blog.csdn.net/floodingfire/article/details/8144587

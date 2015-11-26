@@ -41,4 +41,13 @@ android优秀学习资料汇总： https://github.com/bboyfeiyu/android-tech-fro
 android 在线源码地址： http://androidxref.com/
 
                     http://grepcode.com/project/repository.grepcode.com/java/ext/com.google.android/android/
+                    
+android 屏幕密度博客： http://www.cnblogs.com/avenwu/p/3503746.html 
+
+简单网络请求框架 解析  http://www.devtf.cn/?p=700&utm_source=tuicool&utm_medium=referral
+
+android存储相关讲解，很透彻   http://blog.csdn.net/zhaokaiqiang1992/article/details/43451931
+--------------------------------------------------------------------------------------
+eclipse快捷键  http://www.cnblogs.com/iamfy/archive/2012/07/11/2586869.html
+
                       

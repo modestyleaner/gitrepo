@@ -1,0 +1,45 @@
+1 检测设备是否具有某些物理属性，如摄像头，传感器 等
+
+  PackageManager pm = getPackageManager();
+  //判断是否有方向传感器
+  if(pm.hasSystemFeature(PackageManager.FEATURE_SENSOR_COMPASS)){
+			
+  }
+  ------------------------------------------------------
+2 进行网络检测，无网络，进行弹出框提示
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    
+    /** 
+     * 设置在onStart()方法里面，可以在界面每次获得焦点的时候都进行检测 
+     */  
+	@Override
+	protected void onStart() {
+		super.onStart();
+		ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo netInfo = cm.getActiveNetworkInfo();
+		if(netInfo!=null && netInfo.isConnected()){
+			Toast.makeText(this, "网络连接正常", Toast.LENGTH_SHORT).show();
+		}else{
+			AlertDialog.Builder builder =new  AlertDialog.Builder(this);
+			builder.setTitle("开启网络服务").setMessage("网络未连接,请进行网络设置")
+			       .setPositiveButton("设置", new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						if(android.os.Build.VERSION.SDK_INT > 10){
+							startActivity(new Intent(android.provider.Settings.ACTION_SETTINGS));
+						}else{
+							startActivity(new Intent(android.provider.Settings.ACTION_WIFI_SETTINGS));
+						}
+						dialog.cancel();
+					}
+				}).setNegativeButton("取消", new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.cancel();
+					}
+				}).show();
+		}
+	}
+	-----------------------------------------------------------------------------
+3   .9 图片的一些理解： http://blog.csdn.net/zhaokaiqiang1992/article/details/42968333
+

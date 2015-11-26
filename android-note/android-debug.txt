@@ -1,0 +1,67 @@
+andorid Log 一些注意事项
+	
+	Log.i(LOG_TAG,"msg");
+	
+	1 TAG 取名：
+	   方式1 ： 使用人名作为tag标志，此方式，不宜确定产生日志的文件类
+	  方式2 ： 动态选取： 
+	     private static final String LOG_TAG = Activity.class.getSimpleName();
+	     该种方式，如果代码在编译时，进行了混淆处理，则打印的出日志类，无法确认是哪个类
+	  方式3 ： 静态方式
+	     private static final String LOG_TAG = "ActivityClass";
+	     
+
+    2 打日志推荐方式：
+	    这条日志所在的类，我们通过LOGTAG可以表示
+	    这条日志所在的方法，需要加入方法名的字符串
+	    必要的其他信息，比如参数或者局部变量。
+
+    private String  getBookName(int bookId) {
+	    String bookName = mBooks.get(bookId);
+	    DroidLog.i(LOGTAG, "getBookName bookId=" + bookId + ";bookName=" + bookName);
+	    return bookName;
+	}
+
+    3 屏蔽日志输出
+    
+      方式一： 运行时屏蔽：
+      
+       自定义LogUtil类,进行判断
+       
+       public class LogUtil {
+		    private static final boolean ENABLE_LOG = true;
+		
+		    public static void i(String tag, String message) {
+		        if (ENABLE_LOG) {
+		            android.util.Log.i(tag, message);
+		        }
+		    }
+		}
+		
+		出现问题： 虽然不会有日志输出，但是字符串拼接还是会执行
+		
+      方式二： 编译器屏蔽：
+    Proguard有一个功能：assumenosideeffects
+       该功能常常用来处理日志打印，比如我们想要屏蔽掉来自DroidLog的日志打印。 在混淆的配置文件中，加入下列代码
+    
+    -assumenosideeffects class com.droidyue.logdemo.DroidLog {
+        public static *** i(...);
+	}
+	
+	-assumenosideeffects class android.util.Log {
+        public static *** d(...);
+        public static *** e(...);
+        public static *** i(...);
+        public static *** v(...);
+        public static *** println(...);
+        public static *** w(...);
+        public static *** wtf(...);
+	}
+	
+	注意： 无论是运行时日志屏蔽还是编译期，message参数上发生的字符串拼接都依然存在。
+	但是编译期屏蔽减少了方法调用（即方法进出栈操作），理论上编译期屏蔽日志更优。
+	
+
+
+
+

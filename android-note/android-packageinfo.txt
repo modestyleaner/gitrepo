@@ -1,0 +1,39 @@
+
+andorid 系统信息：
+ 1 android.os.Build  
+ 	Build.BRAND
+ 	Build.DEVICE ...
+ 2 SystemProperty 系统属性
+    System.getProperty("os.version");
+    ...
+ 3 android 系统目录 system/build.prop 有相关设备信息   cat build.prop
+ 4 /proc 目录下，包含大量系统信息
+
+-----------------------------------------------------------------
+android 应用信息： PackageManager
+
+ PackageManager 负责管理所有已安装的应用信息
+ 
+  ActivityInfo : <activity ></activity> <receiver></receiver>之间的信息，如name,label,icon,launchmod
+  ServiceInfo: <service></service>之间信息
+  Application: <application></applicaton>之间信息。包含flag，FLAG_SYSTEM ：系统应用 FLAG_EXTERNAL_STORAGE sd卡上应用
+  PackageInfo ： 包含了mainifest文件相关节点信息
+  ResolveInfo：包含<intent>上一级的信息。通过该类，可以获取特定Intent条件的应用。如带分享，播放功能的应用。
+  
+  1 判断app类型： 利用applicationInfo 的flag： FLAG_SYSTEM
+  
+   	 app.flags & ApplicationInfo.FLAG_SYSTEM  !=0  系统应用
+   	 										  <=0  第三方应用
+   	 app.flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP !=0  系统应用升级后也是第三方应用
+   	 app.flags & ApplicationInfo.FLAG_EXTERNAL_STORAGE !=0   sd卡应用					
+   	 
+---------------------------------------------------------------------------------------------
+android 应用信息：ActivityManager 获取正在运行的应用程序信息
+
+	ActivityManager.MemoryInfo
+	Debug.MemoryInfo
+	RunningAppProcessInfo
+	RunningServiceInfo
+    
+  
+   

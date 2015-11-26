@@ -60,3 +60,13 @@ android 消息机制：
       	}
       });
       
+
+
+android提供了几种在其他线程中访问UI线程的方法。
+Activity.runOnUiThread( Runnable )
+View.post( Runnable )
+View.postDelayed( Runnable, long )
+Hanlder 
+  
+  
+    

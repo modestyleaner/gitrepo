@@ -38,4 +38,10 @@ android adb 使用技巧：
 				 input keyevent 22  //right
 				 input keyevent 66  //enter
 
-14  
+
+网址参考： http://www.open-open.com/lib/view/open1327557366686.html 
+
+
+
+11-19 14:43:42.905: I/chromium(18892): [INFO:CONSOLE(15)] "Uncaught TypeError: Cannot read property 'toastMessage' of undefined", source: file:///android_asset/test.html (15)
+  
